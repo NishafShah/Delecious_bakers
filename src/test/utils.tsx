@@ -1,7 +1,8 @@
-import React from 'react'
-import { render, RenderOptions } from '@testing-library/react'
+import React, { createContext } from 'react'
+import { render } from '@testing-library/react'
+import type { RenderOptions } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from '@/context/AuthContext'
+import { vi } from 'vitest'
 import { CartProvider } from '@/context/CartContext'
 
 // Mock user data
@@ -67,6 +68,24 @@ export const mockTestimonial = {
   created_at: '2024-01-01T00:00:00Z',
 }
 
+// Mock Auth Context
+interface AuthContextType {
+  user: typeof mockUser | null
+  session: { user: typeof mockUser; access_token: string } | null
+  loading: boolean
+  signUp: any
+  signIn: any
+  signOut: any
+  resetPassword: any
+  updateProfile: any
+}
+
+const MockAuthContext = createContext<AuthContextType | undefined>(undefined)
+
+const MockAuthProvider: React.FC<{ children: React.ReactNode; value: AuthContextType }> = ({ children, value }) => {
+  return <MockAuthContext.Provider value={value}>{children}</MockAuthContext.Provider>
+}
+
 // Custom render function with providers
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   initialEntries?: string[]
@@ -96,11 +115,11 @@ export function renderWithProviders(
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <BrowserRouter>
-        <AuthProvider value={mockAuthValue}>
+        <MockAuthProvider value={mockAuthValue}>
           <CartProvider>
             {children}
           </CartProvider>
-        </AuthProvider>
+        </MockAuthProvider>
       </BrowserRouter>
     )
   }

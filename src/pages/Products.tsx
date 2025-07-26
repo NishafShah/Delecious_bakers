@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ProductCard } from '@/components/ProductCard'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { getProducts, type Product } from '@/lib/supabase'
-import { Filter, Grid, List } from 'lucide-react'
 
 export const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const navigate = useNavigate()
 
   const categories = ['all', 'Cakes', 'Cupcakes', 'Brownies', 'Cookies', 'Breads']
 
