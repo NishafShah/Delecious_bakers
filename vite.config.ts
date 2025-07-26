@@ -10,4 +10,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    outDir: 'dist', // 👈 Ensures Vercel can detect the correct output directory
+  },
 })
