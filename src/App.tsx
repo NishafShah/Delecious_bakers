@@ -20,6 +20,8 @@ import { Register } from './pages/Register'
 import { Dashboard } from './pages/Dashboard'
 import { ForgotPassword } from './pages/ForgotPassword'
 import { ResetPassword } from './pages/ResetPassword'
+import { AdminLogin } from './pages/AdminLogin'
+import { AdminDashboard } from './pages/AdminDashboard'
 
 function App() {
   return (
@@ -27,25 +29,35 @@ function App() {
       <CartProvider>
         <Router>
           <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
-            <Header />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-              </Routes>
-            </main>
-            
-            <Footer />
+            <Routes>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              
+              {/* Regular Routes with Header/Footer */}
+              <Route path="/*" element={
+                <>
+                  <Header />
+                  <main>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/products" element={<Products />} />
+                      <Route path="/product/:id" element={<ProductDetail />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/checkout" element={<Checkout />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password" element={<ResetPassword />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </>
+              } />
+            </Routes>
             
             <ToastContainer
               position="bottom-right"
