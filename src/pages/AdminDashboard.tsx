@@ -8,7 +8,6 @@ import {
   Settings, 
   LogOut, 
   DollarSign,
-  Users,
   TrendingUp,
   Menu,
   BarChart3
@@ -22,8 +21,7 @@ import {
   SidebarMenu, 
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
-  useSidebar
+  SidebarTrigger
 } from '@/components/ui/sidebar'
 import { useAuth } from '@/context/AuthContext'
 import { supabase } from '@/lib/supabase'

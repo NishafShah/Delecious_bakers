@@ -25,7 +25,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   className = ''
 }) => {
   const [images, setImages] = useState<UploadedImage[]>([])
-  const [uploading, setUploading] = useState(false)
 
   // Simulate image upload to a cloud service
   // In a real app, you would upload to services like Cloudinary, AWS S3, etc.

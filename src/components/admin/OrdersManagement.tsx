@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Eye, Search, Filter, Clock, CheckCircle, XCircle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Eye, Search, Clock, CheckCircle, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { 
   Table, 
   TableBody, 
@@ -16,8 +16,7 @@ import {
   DialogContent, 
   DialogDescription, 
   DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+  DialogTitle
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { supabase } from '@/lib/supabase'
@@ -74,9 +73,11 @@ const OrderStatusBadge = ({ status }: { status: Order['status'] }) => {
   )
 }
 
-const OrderDetailsDialog = ({ order, onClose, onStatusUpdate }: {
+const OrderDetailsDialog = ({ 
+  order, 
+  onStatusUpdate 
+}: {
   order: Order
-  onClose: () => void
   onStatusUpdate: (orderId: string, newStatus: Order['status']) => void
 }) => {
   const [updating, setUpdating] = useState(false)
@@ -420,7 +421,6 @@ export const OrdersManagement = () => {
         {selectedOrder && (
           <OrderDetailsDialog
             order={selectedOrder}
-            onClose={() => setShowDetailsDialog(false)}
             onStatusUpdate={handleStatusUpdate}
           />
         )}

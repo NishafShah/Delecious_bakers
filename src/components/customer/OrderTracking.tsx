@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   Package, 
   Clock, 
@@ -6,8 +6,6 @@ import {
   Truck, 
   MapPin,
   Phone,
-  Calendar,
-  DollarSign,
   Search
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'

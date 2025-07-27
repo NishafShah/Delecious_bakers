@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { 
   Dialog, 
   DialogContent, 
@@ -388,9 +387,12 @@ export const ReviewSystem = ({ productId }: { productId: string }) => {
 
   const handleHelpfulClick = async (reviewId: string) => {
     try {
+      const currentReview = reviews.find(r => r.id === reviewId)
+      if (!currentReview) return
+
       const { error } = await supabase
         .from('reviews')
-        .update({ helpful_count: reviews.find(r => r.id === reviewId)?.helpful_count + 1 || 1 })
+        .update({ helpful_count: currentReview.helpful_count + 1 })
         .eq('id', reviewId)
 
       if (error) throw error

@@ -40,9 +40,12 @@ function Dialog({ children, open: controlledOpen, onOpenChange }: DialogProps) {
             onClick={() => setOpen(false)}
           />
           <div className="relative z-50 max-h-[90vh] w-full max-w-lg overflow-auto">
-            {React.Children.map(children, child => 
-              React.isValidElement(child) && child.type === DialogContent ? child : null
-            )}
+            {React.Children.map(children, child => {
+              if (React.isValidElement(child) && child.type === DialogContent) {
+                return child
+              }
+              return null
+            })}
           </div>
         </div>
       )}
@@ -61,10 +64,12 @@ function DialogTrigger({ children, asChild, ...props }: DialogTriggerProps) {
     return React.cloneElement(children, {
       ...children.props,
       onClick: (e: React.MouseEvent) => {
-        children.props.onClick?.(e)
+        if (children.props && typeof children.props.onClick === 'function') {
+          children.props.onClick(e)
+        }
         setOpen(true)
       }
-    })
+    } as any)
   }
 
   return (

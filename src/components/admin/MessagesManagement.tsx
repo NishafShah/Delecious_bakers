@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   MessageSquare, 
   Reply, 
   Search, 
-  Filter, 
   Clock, 
   CheckCircle, 
   AlertCircle,
@@ -28,8 +27,7 @@ import {
   DialogContent, 
   DialogDescription, 
   DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+  DialogTitle
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { supabase } from '@/lib/supabase'

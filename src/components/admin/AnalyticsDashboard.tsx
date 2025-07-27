@@ -7,8 +7,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  LineChart,
-  Line,
   PieChart,
   Pie,
   Cell,
@@ -20,9 +18,7 @@ import {
   TrendingDown, 
   DollarSign, 
   ShoppingCart, 
-  Package, 
   Users,
-  Calendar,
   BarChart3
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -213,7 +209,7 @@ export const AnalyticsDashboard = () => {
       const productSales: { [key: string]: ProductSales } = {}
       
       orders?.forEach(order => {
-        order.order_items?.forEach(item => {
+        order.order_items?.forEach((item: any) => {
           const productName = item.products?.name || 'Unknown Product'
           if (!productSales[productName]) {
             productSales[productName] = {
@@ -394,7 +390,7 @@ export const AnalyticsDashboard = () => {
                   fill="#8884d8"
                   dataKey="count"
                 >
-                  {analyticsData.orderStatusData.map((entry, index) => (
+                  {analyticsData.orderStatusData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
