@@ -10,7 +10,8 @@ import {
   DollarSign,
   Users,
   TrendingUp,
-  Menu
+  Menu,
+  BarChart3
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -29,6 +30,8 @@ import { supabase } from '@/lib/supabase'
 import { toast } from 'react-toastify'
 import { ProductsManagement } from '@/components/admin/ProductsManagement'
 import { OrdersManagement } from '@/components/admin/OrdersManagement'
+import { MessagesManagement } from '@/components/admin/MessagesManagement'
+import { AnalyticsDashboard } from '@/components/admin/AnalyticsDashboard'
 
 interface DashboardStats {
   totalOrders: number
@@ -55,6 +58,7 @@ const AdminSidebarContent = ({ activeSection, setActiveSection }: {
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'products', label: 'Products', icon: Package },
     { id: 'orders', label: 'Orders', icon: ShoppingCart },
     { id: 'messages', label: 'Messages', icon: MessageSquare },
@@ -226,22 +230,28 @@ const DashboardContent = ({ stats }: { stats: DashboardStats }) => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  )
-}
 
-const MessagesManagement = () => {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900">Messages Management</h2>
-        <p className="text-slate-600">Customer inquiries and support messages</p>
-      </div>
+      {/* Quick Actions */}
       <Card>
-        <CardContent className="p-8 text-center">
-          <MessageSquare className="mx-auto h-12 w-12 text-slate-400 mb-4" />
-          <h3 className="text-lg font-medium text-slate-900 mb-2">Messages Coming Soon</h3>
-          <p className="text-slate-600">Customer message management will be available soon.</p>
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+          <CardDescription>Common administrative tasks</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Button className="h-20 flex flex-col items-center justify-center space-y-2">
+              <Package className="w-6 h-6" />
+              <span>Add New Product</span>
+            </Button>
+            <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
+              <ShoppingCart className="w-6 h-6" />
+              <span>View Orders</span>
+            </Button>
+            <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
+              <BarChart3 className="w-6 h-6" />
+              <span>View Analytics</span>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
@@ -332,6 +342,8 @@ export const AdminDashboard: React.FC = () => {
     switch (activeSection) {
       case 'dashboard':
         return <DashboardContent stats={stats} />
+      case 'analytics':
+        return <AnalyticsDashboard />
       case 'products':
         return <ProductsManagement />
       case 'orders':

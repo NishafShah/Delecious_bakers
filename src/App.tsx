@@ -22,6 +22,7 @@ import { ForgotPassword } from './pages/ForgotPassword'
 import { ResetPassword } from './pages/ResetPassword'
 import { AdminLogin } from './pages/AdminLogin'
 import { AdminDashboard } from './pages/AdminDashboard'
+import { OrderTracking } from './components/customer/OrderTracking'
 
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              
+              {/* Order Tracking Route */}
+              <Route path="/track-orders" element={<OrderTracking />} />
               
               {/* Regular Routes with Header/Footer */}
               <Route path="/*" element={
