@@ -3,23 +3,25 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-// ✅ Quick debug logs (only run in browser)
+// ✅ Debug logs to verify environment variables
 if (typeof window !== 'undefined') {
-  console.log("✅ Supabase URL:", supabaseUrl)
-  console.log("✅ Supabase Anon Key:", supabaseAnonKey ? '[Present ✅]' : '[Missing ❌]')
+  console.log("✅ [Supabase] URL:", supabaseUrl)
+  console.log("✅ [Supabase] Anon Key:", supabaseAnonKey ? '[Present ✅]' : '[Missing ❌]')
 }
 
-// Check if environment variables are set
 if (!supabaseUrl) {
-  console.error('❌ Missing VITE_SUPABASE_URL environment variable. Please check your .env or Vercel settings.')
+  console.error('❌ Missing VITE_SUPABASE_URL. Check your .env or Vercel Project Settings.')
 }
 
 if (!supabaseAnonKey) {
-  console.error('❌ Missing VITE_SUPABASE_ANON_KEY environment variable. Please check your .env or Vercel settings.')
+  console.error('❌ Missing VITE_SUPABASE_ANON_KEY. Check your .env or Vercel Project Settings.')
 }
 
-// Create Supabase client
-export const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseAnonKey || 'placeholder-key')
+// ✅ Create client with fallback to prevent crash
+export const supabase = createClient(
+  supabaseUrl || 'https://missing-url.supabase.co',
+  supabaseAnonKey || 'missing-anon-key'
+)
 
 // -------------------- Types --------------------
 export type Product = {
@@ -95,6 +97,8 @@ export type Testimonial = {
 
 // -------------------- API Functions --------------------
 export const getProducts = async (category?: string) => {
+  console.log("📦 [getProducts] Fetching products for category:", category)
+
   let query = supabase
     .from('products')
     .select('*')
@@ -106,11 +110,18 @@ export const getProducts = async (category?: string) => {
   }
 
   const { data, error } = await query
-  if (error) throw error
+  if (error) {
+    console.error("❌ [getProducts] Supabase error:", error)
+    throw error
+  }
+
+  console.log("✅ [getProducts] Fetched products:", data)
   return data as Product[]
 }
 
 export const getFeaturedProducts = async (limit = 6) => {
+  console.log("🌟 [getFeaturedProducts] Limit:", limit)
+
   const { data, error } = await supabase
     .from('products')
     .select('*')
@@ -118,43 +129,68 @@ export const getFeaturedProducts = async (limit = 6) => {
     .eq('in_stock', true)
     .limit(limit)
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [getFeaturedProducts] Error:", error)
+    throw error
+  }
+
+  console.log("✅ [getFeaturedProducts] Data:", data)
   return data as Product[]
 }
 
 export const getProduct = async (id: string) => {
+  console.log("🔍 [getProduct] ID:", id)
+
   const { data, error } = await supabase
     .from('products')
     .select('*')
     .eq('id', id)
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [getProduct] Error:", error)
+    throw error
+  }
+
   return data as Product
 }
 
 export const createOrder = async (orderData: Omit<Order, 'id' | 'created_at' | 'updated_at'>) => {
+  console.log("🧾 [createOrder] Data:", orderData)
+
   const { data, error } = await supabase
     .from('orders')
     .insert([orderData])
     .select()
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [createOrder] Error:", error)
+    throw error
+  }
+
   return data as Order
 }
 
 export const createOrderItems = async (orderItems: Omit<OrderItem, 'id' | 'created_at'>[]) => {
+  console.log("📦 [createOrderItems] Items:", orderItems)
+
   const { data, error } = await supabase
     .from('order_items')
     .insert(orderItems)
     .select()
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [createOrderItems] Error:", error)
+    throw error
+  }
+
   return data as OrderItem[]
 }
 
 export const getUserOrders = async (userId: string) => {
+  console.log("📜 [getUserOrders] UserID:", userId)
+
   const { data, error } = await supabase
     .from('orders')
     .select(`
@@ -167,28 +203,44 @@ export const getUserOrders = async (userId: string) => {
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [getUserOrders] Error:", error)
+    throw error
+  }
+
   return data
 }
 
 export const submitContactMessage = async (messageData: Omit<ContactMessage, 'id' | 'created_at'>) => {
+  console.log("📨 [submitContactMessage] Data:", messageData)
+
   const { data, error } = await supabase
     .from('contact_messages')
     .insert([messageData])
     .select()
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [submitContactMessage] Error:", error)
+    throw error
+  }
+
   return data as ContactMessage
 }
 
 export const getTestimonials = async (limit = 6) => {
+  console.log("🗣 [getTestimonials] Limit:", limit)
+
   const { data, error } = await supabase
     .from('testimonials')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(limit)
 
-  if (error) throw error
+  if (error) {
+    console.error("❌ [getTestimonials] Error:", error)
+    throw error
+  }
+
   return data as Testimonial[]
 }
