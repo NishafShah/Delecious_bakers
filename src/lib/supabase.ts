@@ -1,28 +1,52 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string
 
-// ✅ Quick debug logs (only run in browser)
-if (typeof window !== 'undefined') {
-  console.log("✅ Supabase URL:", supabaseUrl)
-  console.log("✅ Supabase Anon Key:", supabaseAnonKey ? '[Present ✅]' : '[Missing ❌]')
+console.log("🔐 Supabase URL:", supabaseUrl)
+console.log("🔐 Supabase Key Exists:", !!supabaseKey)
+
+export const supabase = createClient(supabaseUrl, supabaseKey)
+
+// ----------------------------
+// 🧩 Types
+// ----------------------------
+export type Product = {
+  id: string
+  name: string
+  description: string
+  price: number
+  category: string
+  image_url: string
 }
 
-// Check if environment variables are set
-if (!supabaseUrl) {
-  console.error('❌ Missing VITE_SUPABASE_URL environment variable. Please check your .env or Vercel settings.')
+export type CartItem = Product & { quantity: number }
+
+export type Testimonial = {
+  id: string
+  name: string
+  message: string
+  avatar_url: string
 }
 
-if (!supabaseAnonKey) {
-  console.error('❌ Missing VITE_SUPABASE_ANON_KEY environment variable. Please check your .env or Vercel settings.')
+// ----------------------------
+// 🧩 Functions
+// ----------------------------
+
+export async function getProducts(): Promise<Product[]> {
+  const { data, error } = await supabase.from('products').select('*')
+  if (error) throw error
+  return data as Product[]
 }
 
-// Create Supabase client with fallback for development
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key'
-)
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const { data, error } = await supabase.from('products').select('*').eq('featured', true)
+  if (error) throw error
+  return data as Product[]
+}
 
-// ...rest of your code (unchanged)
-// [All your type definitions and Supabase functions below remain the same]
+export async function getTestimonials(): Promise<Testimonial[]> {
+  const { data, error } = await supabase.from('testimonials').select('*')
+  if (error) throw error
+  return data as Testimonial[]
+}
