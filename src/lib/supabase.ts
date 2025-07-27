@@ -1,4 +1,3 @@
-// lib/supabase.ts
 import { createClient } from "@supabase/supabase-js";
 
 export const supabase = createClient(
@@ -6,7 +5,6 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY!
 );
 
-// ✅ Add these types if not defined elsewhere
 export type Product = {
   id: string;
   name: string;
@@ -14,20 +12,28 @@ export type Product = {
   price: number;
   category: string;
   image: string;
+  image_url: string;
+  ingredients: string;
+  nutrition_info: string;
+  in_stock: boolean;
+  featured: boolean;
+};
+
+export type CartItem = {
+  id: string;
+  product: Product;
+  quantity: number;
 };
 
 export type Testimonial = {
   id: string;
-  name: string;
-  message: string;
+  comment: string;
+  customer_name: string;
+  image_url: string;
   rating: number;
 };
 
-export type CartItem = Product & {
-  quantity: number;
-};
-
-// ✅ Sample fetching functions
+// Sample data fetching functions
 export async function getProducts(): Promise<Product[]> {
   const { data, error } = await supabase.from("products").select("*");
   if (error) throw error;
